@@ -15,10 +15,21 @@ return {
       priority = 1000, -- load before everything else
 
   },
-  -- Alternative theme, kept around for quick switching (`:colorscheme github_dark` etc.).
   {
     "projekt0n/github-nvim-theme",
     lazy = true,
     priority = 1000,
   },
+    {
+      'uloco/bluloco.nvim',
+      lazy = false,
+      priority = 1000,
+      dependencies = { 'rktjmp/lush.nvim' },
+      opts = {},
+    },
+    {
+      'rmehri01/onenord.nvim',
+      lazy = false,
+      priority = 1000,
+    }
 }

@@ -21,6 +21,14 @@ return {
                 name = "Catcappcin",
                 colorscheme = "catppuccin",
             },
+            {
+                name = "Blueloco",
+                colorscheme = "bluloco",
+            },
+            {
+                name = "Onenord",
+                colorscheme = "onenord",
+            },
         }
     })
     end

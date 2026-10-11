@@ -23,6 +23,13 @@ vim.opt.autoindent = true                          -- Copy indent from current l
 vim.opt.fillchars:append({
   vert = "|"
 })
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "cs",
+  callback = function()
+    vim.opt_local.indentexpr = ""
+    vim.opt_local.cindent = true
+  end,
+})
 -- Search settings
 vim.opt.ignorecase = true                          -- Case insensitive search
 vim.opt.smartcase = true                           -- Case sensitive if uppercase in search
