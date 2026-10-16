@@ -20,9 +20,7 @@ vim.opt.softtabstop = 2                            -- Soft tab stop
 vim.opt.expandtab = true                           -- Use spaces instead of tabs
 vim.opt.smartindent = true                         -- Smart auto-indenting
 vim.opt.autoindent = true                          -- Copy indent from current line
-vim.opt.fillchars:append({
-  vert = "|"
-})
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "cs",
   callback = function()
@@ -52,7 +50,7 @@ vim.opt.conceallevel = 0                           -- Don't hide markup
 vim.opt.concealcursor = ""                         -- Don't hide cursor line markup
 vim.opt.lazyredraw = true                          -- Don't redraw during macros
 vim.opt.synmaxcol = 300                            -- Syntax highlighting limit
-vim.opt.fillchars = { eob = " " }                  -- Hide ~ on empty lines
+vim.opt.fillchars = { eob = " ", vert = "|" }       -- Hide ~ on empty lines; draw vertical split borders
 
 -- Create undo directory if it doesn't exist
 local undodir = vim.fn.expand("~/.vim/undodir")

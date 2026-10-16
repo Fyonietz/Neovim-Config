@@ -70,15 +70,42 @@ return {
     },
   },
 
-  -- Distraction free editing
+  -- Distraction free editing (<leader>z / :NoNeckPain toggle it, see config/keymaps.lua).
+  --
+  -- NoNeckPain silently skips the side buffers when its `width` is >= the current
+  -- terminal width (and again when the remaining side padding is below
+  -- `minSideBufferWidth`), which made the toggle look like a no-op on a terminal
+  -- narrower than width + 2 * minSideBufferWidth. Derive the width from the
+  -- terminal instead of hard-coding it, and follow terminal resizes so toggling a
+  -- resized Neovim keeps working.
   {
     "shortcuts/no-neck-pain.nvim",
-    opts = { width = 120 },
     config = function(_, opts)
+      local function centered_width()
+        -- ~70% of the terminal, clamped so narrow terminals still get side buffers.
+        return math.min(120, math.max(50, math.floor(vim.o.columns * 0.7)))
+      end
+
+      opts.width = centered_width()
+      opts.minSideBufferWidth = 5
+
       require("no-neck-pain").setup(opts)
-      vim.api.nvim_create_autocmd("VimEnter", {
+
+      vim.api.nvim_create_autocmd("VimResized", {
+        group = vim.api.nvim_create_augroup("NoNeckPainCenteredWidth", { clear = true }),
         callback = function()
-          require("no-neck-pain").enable()
+          local width = centered_width()
+          if width == _G.NoNeckPain.config.width then
+            return
+          end
+
+          if _G.NoNeckPain.state ~= nil and _G.NoNeckPain.state.enabled then
+            -- also updates the config, then re-centers the open side buffers
+            require("no-neck-pain").resize(width)
+          else
+            -- plugin is off: only store it, the next enable uses it
+            _G.NoNeckPain.config.width = width
+          end
         end,
       })
     end,
