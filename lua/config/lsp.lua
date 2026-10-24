@@ -74,13 +74,27 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 -- Zig
 vim.lsp.config("zls", {
-  cmd          = { vim.fn.expand("~/.zvm/bin/zls") },
+  cmd          = { vim.fn.expand("/opt/zls/zls") },
   filetypes    = { "zig", "zir" },
   root_markers = { "zls.json", "build.zig", ".git" },
   capabilities = capabilities,
 })
 vim.lsp.enable("zls")
+-- vim.lsp.config("zigscient",{
+--     cmd = {vim.fn.expand("/opt/zigscient/zigscient-x86_64-linux")},
+--     filetypes = {"zig","zir"},
+--       root_markers = { "zls.json", "build.zig", ".git" },
+--       capabilities = capabilities,
+-- })
+-- vim.lsp.enable("zigscient")
 
+--Assembly
+vim.lsp.config("asm-lsp",{
+    cmd = {vim.fn.expand("/usr/sbin/asm-lsp")},
+    filetypes = {"asm","s","vasm"},
+      capabilities = capabilities,
+})
+vim.lsp.enable("asm-lsp")
 -- C#
 vim.lsp.config("omnisharp", {
   cmd = {

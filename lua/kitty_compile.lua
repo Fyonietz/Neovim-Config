@@ -112,6 +112,14 @@ local function project_command()
   return cmd
 end
 
+local function test_command()
+  local f = io.open(vim.fn.getcwd() .. "/.test", "r")
+  if not f then return "" end
+  local cmd = f:read("*l") or ""
+  f:close()
+  return cmd
+end
+
 function M.compile()
   local default = project_command()
   if default == "" then default = last_cmd or "" end
@@ -124,6 +132,14 @@ function M.recompile()
   if last_cmd then M.run(last_cmd) else M.compile() end
 end
 
+function M.test_unit()
+  local default = test_command()
+  if default == "" then default = last_cmd or "" end
+  vim.ui.input({ prompt = "Test: ", default = default }, function(input)
+    if input and input ~= "" then M.run(input) end
+  end)
+end
+
 function M.setup()
   vim.keymap.set("n", "<F4>", M.compile,    { desc = "Compile (kitty)" })
   vim.keymap.set("n", "<F5>", M.recompile,  { desc = "Recompile (kitty)" })
@@ -131,6 +147,7 @@ function M.setup()
   vim.keymap.set("n", "<F7>", M.errors,     { desc = "Load compile errors" })
   vim.keymap.set("n", "<F8>", M.next_error, { desc = "Next compile error" })
   vim.keymap.set("n", "<F9>", M.prev_error, { desc = "Prev compile error" })
+  vim.keymap.set("n", "<F10>", M.test_unit, { desc = "Perform Testing Unit" })
 
   vim.api.nvim_create_autocmd("VimLeavePre", { callback = M.close })
 end
